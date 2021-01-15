@@ -1,6 +1,6 @@
-# Meaningness.com ebook generator
+# metarationality.com ebook generator
 
-This is a script that takes a bunch of .html files from [meaningness.com](https://meaningness.com/) online ebook and converts them to epub.
+This is a script that takes a bunch of .html files from [metarationality.com](https://metarationality.com/) online ebook and converts them to epub.
 
 ## How to use
 
@@ -12,6 +12,4 @@ Run Makefile:
 
     make epub
 
-Optionally, you can also run the calibre conversion script to fix all kind of wrongness with the epub:
-
-    ebook-convert meaningness.epub meaningness_clean.epub
+Almost entirely based on the work of Bystroushaak [here](https://github.com/Bystroushaak/meaningness.com_epub_generator).
