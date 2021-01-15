@@ -9,7 +9,7 @@ import requests
 import dhtmlparser
 from ebooklib import epub
 
-PROJECT_URL = "https://github.com/Bystroushaak/meaningness.com_epub_generator"
+PROJECT_URL = "https://github.com/Bystroushaak/Eggplant.com_epub_generator"
 
 
 logger = logging.getLogger("convertor")
@@ -83,16 +83,16 @@ class BookGenerator:
         self.book.add_item(nav_css)
 
 
-class MeaningnessEbook:
+class EggplantEbook:
     def __init__(self, html_root, tmp_path):
         self.tmp_path = tmp_path
 
         self.html_root = html_root
-        self.book = BookGenerator('Meaningness')
+        self.book = BookGenerator('Eggplant')
 
         self.book.add_author('David Chapman')
         self.book.set_language('en')
-        self.book.add_metadata('DC', 'date', "2020-01-27")
+        self.book.add_metadata('DC', 'date', "2021-01-15")
         self.book.add_metadata('DC', 'generator', '', {'name': 'generator',
                                                        'content': PROJECT_URL})
 
@@ -113,7 +113,7 @@ class MeaningnessEbook:
             index_html = f.read()
 
         index_dom = dhtmlparser.parseString(index_html)
-        toc_dom = index_dom.find("ul", {"class": "book-toc"})[0]
+        toc_dom = index_dom.find("nav", {"class": "book-tree"})[0]
         for a_el in toc_dom.find("a"):
             href = a_el.params["href"]
             yield (href, href)
@@ -125,7 +125,7 @@ class MeaningnessEbook:
             index_html = f.read()
 
         index_dom = dhtmlparser.parseString(index_html)
-        toc_dom = index_dom.find("ul", {"class": "book-toc"})[0]
+        toc_dom = index_dom.find("nav", {"class": "book-tree"})[0]
 
         def process(toc_dom):
             li_structure = []
@@ -154,7 +154,7 @@ class MeaningnessEbook:
 
         if not title:
             title = dom.find("title")[0].getContent()
-            title = title.replace(" | Meaningness", "", 1)
+            title = title.replace(" | Meta-rationality", "", 1)
 
         body = dom.find("body")[0]
 
@@ -173,6 +173,10 @@ class MeaningnessEbook:
             for el in selector:
                 el.replaceWith(empty)
 
+        replace(body.find("p", {"id": "copyright"}))
+        replace(body.find("aside", {"id": "sidebar"}))
+        replace(body.find("nav", {"id": "next-page"}))
+        replace(body.find("div", {"id": "comment_bubble_wrapper"}))
         replace(body.find("div", {"class": "nocontent"}))
         replace(body.find("div", {"class": "tertiary-content-wrapper"}))
         replace(body.find("div", {"class": "more-link"}))
@@ -180,12 +184,12 @@ class MeaningnessEbook:
         replace(body.find("div", {"class": "block-content content"}))
         replace(body.find("div", {"class": "region region-content-aside"}))
         replace(body.find("div", {"role": "search"}))
-        replace(body.find("div", fn=lambda x: "block-meaningness-navigation" in x.params.get("class", "")))
+        replace(body.find("div", fn=lambda x: "block-Eggplant-navigation" in x.params.get("class", "")))
         replace(body.find("header"))
         replace(body.find("div", {"id": "tertiary-content-wrapper"}))
         replace(body.find("nav", {"class": "clearfix"}))
 
-        return body.find("div", {"class": "node-content"})[0]
+        return body.find("article", {"id": "article"})[0]
 
     def _inline_images(self, body, article_path):
         for img in body.find("img"):
@@ -257,8 +261,8 @@ def put_ebook_together(html_path):
     if not os.path.exists(tmp_name):
         os.mkdir(tmp_name)
 
-    book = MeaningnessEbook(html_path, tmp_name)
-    book.generate_ebook('meaningness.epub')
+    book = EggplantEbook(html_path, tmp_name)
+    book.generate_ebook('Eggplant.epub')
 
 
 if __name__ == '__main__':

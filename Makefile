@@ -5,18 +5,18 @@ download_and_make: download epub
 	echo "Done"
 
 epub: download
-	./make.py "meaningness.com"
+	./make.py "metarationality.com"
 
 download:
-	if [ ! -d "meaningness.com" ]; then \
-		wget -r -l 1 -k -p -E https://meaningness.com/; \
+	if [ ! -d "metarationality.com" ]; then \
+		wget -r -l 1 -k -p -E https://metarationality.com/; \
 	fi
 
 clean:
-	ebook-convert meaningness.epub meaningness_clean.epub
+	ebook-convert metarationality.epub metarationality_clean.epub
 
 help:
-	@echo "meaningness.com generator"
+	@echo "metarationality.com generator"
 	@echo
 	@echo "Parameters:"
 	@echo
